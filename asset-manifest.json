@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Onariaginosa/theory-final/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/Onariaginosa/theory-final/static/js/main.edc0f3e1.chunk.js",
+    "main.js.map": "/Onariaginosa/theory-final/static/js/main.edc0f3e1.chunk.js.map",
+    "runtime-main.js": "/Onariaginosa/theory-final/static/js/runtime-main.bfd1de7f.js",
+    "runtime-main.js.map": "/Onariaginosa/theory-final/static/js/runtime-main.bfd1de7f.js.map",
+    "static/js/2.51081df6.chunk.js": "/Onariaginosa/theory-final/static/js/2.51081df6.chunk.js",
+    "static/js/2.51081df6.chunk.js.map": "/Onariaginosa/theory-final/static/js/2.51081df6.chunk.js.map",
+    "static/js/3.e38b6294.chunk.js": "/Onariaginosa/theory-final/static/js/3.e38b6294.chunk.js",
+    "static/js/3.e38b6294.chunk.js.map": "/Onariaginosa/theory-final/static/js/3.e38b6294.chunk.js.map",
+    "index.html": "/Onariaginosa/theory-final/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/Onariaginosa/theory-final/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.51081df6.chunk.js.LICENSE.txt": "/Onariaginosa/theory-final/static/js/2.51081df6.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/Onariaginosa/theory-final/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bfd1de7f.js",
+    "static/js/2.51081df6.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.edc0f3e1.chunk.js"
+  ]
+}
