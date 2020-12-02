@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/onariaginosa/theory-final/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/onariaginosa/theory-final/static/js/main.edc0f3e1.chunk.js",
-    "main.js.map": "/onariaginosa/theory-final/static/js/main.edc0f3e1.chunk.js.map",
-    "runtime-main.js": "/onariaginosa/theory-final/static/js/runtime-main.67d2383d.js",
-    "runtime-main.js.map": "/onariaginosa/theory-final/static/js/runtime-main.67d2383d.js.map",
-    "static/js/2.51081df6.chunk.js": "/onariaginosa/theory-final/static/js/2.51081df6.chunk.js",
-    "static/js/2.51081df6.chunk.js.map": "/onariaginosa/theory-final/static/js/2.51081df6.chunk.js.map",
-    "static/js/3.e38b6294.chunk.js": "/onariaginosa/theory-final/static/js/3.e38b6294.chunk.js",
-    "static/js/3.e38b6294.chunk.js.map": "/onariaginosa/theory-final/static/js/3.e38b6294.chunk.js.map",
-    "index.html": "/onariaginosa/theory-final/index.html",
-    "static/css/main.8c8b27cf.chunk.css.map": "/onariaginosa/theory-final/static/css/main.8c8b27cf.chunk.css.map",
-    "static/js/2.51081df6.chunk.js.LICENSE.txt": "/onariaginosa/theory-final/static/js/2.51081df6.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/onariaginosa/theory-final/static/media/logo.6ce24c58.svg"
+    "main.css": "/theory-final/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/theory-final/static/js/main.edc0f3e1.chunk.js",
+    "main.js.map": "/theory-final/static/js/main.edc0f3e1.chunk.js.map",
+    "runtime-main.js": "/theory-final/static/js/runtime-main.a2f3ef59.js",
+    "runtime-main.js.map": "/theory-final/static/js/runtime-main.a2f3ef59.js.map",
+    "static/js/2.51081df6.chunk.js": "/theory-final/static/js/2.51081df6.chunk.js",
+    "static/js/2.51081df6.chunk.js.map": "/theory-final/static/js/2.51081df6.chunk.js.map",
+    "static/js/3.e38b6294.chunk.js": "/theory-final/static/js/3.e38b6294.chunk.js",
+    "static/js/3.e38b6294.chunk.js.map": "/theory-final/static/js/3.e38b6294.chunk.js.map",
+    "index.html": "/theory-final/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/theory-final/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.51081df6.chunk.js.LICENSE.txt": "/theory-final/static/js/2.51081df6.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/theory-final/static/media/logo.6ce24c58.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.67d2383d.js",
+    "static/js/runtime-main.a2f3ef59.js",
     "static/js/2.51081df6.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
     "static/js/main.edc0f3e1.chunk.js"
