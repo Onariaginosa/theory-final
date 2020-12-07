@@ -1,11 +1,12 @@
 import React from "react";
 import { Sigma, EdgeShapes, NodeShapes, RandomizeNodePositions, RelativeSize } from 'react-sigma';
 import ForceLink from 'react-sigma/lib/ForceLink';
+import { DragNodes } from 'react-sigma';
 
 function Graph(data) {
     let temp = {
         nodes: [
-            { id: "hidden", color: "white", size: 25, x:-1, y: -1},
+            { id: "hidden", color: "white", size: 25, x:-0.2, y: -0.2},
             { id: "n1", label: "Alice", size: 20, color: "#45adc1", x:0, y:0},
             { id: "n2", label: "Rabbit", size: 25, type: "", color:"red", x:1, y:0}
         ],
@@ -22,9 +23,10 @@ function Graph(data) {
       
         <div style={{
             outline: "3px dotted #1a7081",
-            width: "60%",
+            width: "90%",
             margin: "50px",
             height: "600px",
+            padding: "50px 50px 50px 50px",
         }}>
             <Sigma renderer="canvas" graph={temp}
                 style=
@@ -51,7 +53,8 @@ function Graph(data) {
             >
                 <EdgeShapes default="curvedArrow"/>
                 <NodeShapes default="circle" />
-                <ForceLink background strongGravityMode={false} alignNodeSiblings={true} outboundAttractionDistribution={true}/>
+                <DragNodes />
+                {/* <ForceLink background strongGravityMode={false} alignNodeSiblings={true} outboundAttractionDistribution={true}/> */}
                 {/* <RandomizeNodePositions/> */}
             </Sigma>
         </div>

@@ -7,7 +7,7 @@ import InputForm from '../Form';
 import Chart from '../Chart';
 
 
-function Home() {
+function DFA() {
 
   return (
     <div>
@@ -44,4 +44,4 @@ function Home() {
   )
 }
   
-export default Home;
+export default DFA;

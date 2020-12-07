@@ -4,11 +4,14 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 function InputForm() {
+
+    
     return (
         <div style={{
             outline: "3px dotted #1a7081",
-            width: "60%",
+            width: "90%",
             margin: "50px",
+            padding: "50px 50px 50px 50px"
         }}>
             <Form>
                 <Form.Row>
