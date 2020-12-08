@@ -72,11 +72,10 @@ function NFA() {
         let edgeId = "e";
         let count = 0;
 
-
         // source id / name: [λ transition targets[], 0 transition target, 1 transition target],
 
         for (const [src, transitionMap] of Object.entries(graph)) {
-            console.log(`${src}: ${transitionMap}`);
+            // console.log(`${src}: ${transitionMap}`);
             interNode = {}
             interNode.id = src;
             interNode.label = src;
@@ -93,7 +92,6 @@ function NFA() {
             tempData.nodes.push(interNode);
             x++;
             y++;
-
           }
 
 

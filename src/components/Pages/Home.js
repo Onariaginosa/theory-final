@@ -19,7 +19,7 @@ function Home() {
         <p> I decided to create a DFA minimizer, and a NFA minimizer</p>
         <p> Grade easily please! 😊</p>
       </div>
-      <div style={{
+      {/* <div style={{
         margin: "25px",
         // display: "flex",
         justifyContent: "center",
@@ -39,7 +39,7 @@ function Home() {
             </Row>
           </Col>
         </Row>
-      </div>
+      </div> */}
     </div>
   )
 }
