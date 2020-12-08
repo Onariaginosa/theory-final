@@ -1,23 +1,42 @@
 import React from "react";
-import { Sigma, EdgeShapes, NodeShapes, RandomizeNodePositions, RelativeSize } from 'react-sigma';
-import ForceLink from 'react-sigma/lib/ForceLink';
+import { Sigma, EdgeShapes, NodeShapes} from 'react-sigma';
 import { DragNodes } from 'react-sigma';
 
-function Graph(data) {
+const Graph = (props) =>{
     let temp = {
         nodes: [
-            { id: "hidden", color: "white", size: 25, x:-0.2, y: -0.2},
-            { id: "n1", label: "Alice", size: 20, color: "#45adc1", x:0, y:0},
-            { id: "n2", label: "Rabbit", size: 25, type: "", color:"red", x:1, y:0}
+            {
+                color: "white",
+                id: "hidden",
+                size: 25,
+                x: -0.2,
+                y: -0.2,
+            },
+            {
+                color: "#45adc1",
+                id: "h",
+                label: "h",
+                size: 25,
+                type: "diamond",
+                x: 0,
+                y: 1
+            },
+            {
+                color: "black",
+                id: "m",
+                label: "m",
+                size: 20,
+                x: 1,
+                y: 2}
         ],
         edges:
-            [
-                { id: "e1", source: "n1", target: "n2", label: "0, 1", color: "black"},
-                { id: "e2", source: "hidden", target: "n1", color: "black", type:"arrow" },
-                { id: "e3", source: "n2", target: "n2", label: "0,1", color: "black"},
-            ]
+            [ ]
     };
+    let take2 = { ...props.data };
     // let myGraph = data;
+
+    console.log("Sent Data: ",props.data);
+    console.log("Temp Data: ",temp)
 
     return (
       
@@ -28,7 +47,7 @@ function Graph(data) {
             height: "600px",
             padding: "50px 50px 50px 50px",
         }}>
-            <Sigma renderer="canvas" graph={temp}
+            <Sigma renderer="canvas" graph={take2}
                 style=
                 {{
                     margin: "0",

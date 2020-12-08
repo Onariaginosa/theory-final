@@ -3,23 +3,26 @@ import Graph from "../Graph";
 import "../../App.css";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Chart from '../Chart';
+import Table from 'react-bootstrap/Table';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal"
+import Modal from "react-bootstrap/Modal";
+
 
 function NFA() {
     // graph is in the format 
     // { source id / name: [λ transition targets[], 0 transition target, 1 transition target], }
     // let graph = {};
     // are in the form [ {name: boolean if accept}]
-    // let nodes = [];
+    // let nodes = [];let temp = [[], [], []];
     // edges are in the form [{source:[target, transition]}]
     // let edges = [];
 
     const transitionIndex = { "λ": 0, "0": 1, "1": 2 };
 
     const [graph, setGraph] = useState({});
+
+    const [startState, setStartState] = useState({state:""});
 
     const [nodes, setNodes] = useState([]);
 
@@ -31,13 +34,153 @@ function NFA() {
     const [warning, setWarning] = useState("");
     const [show, setShow] = useState(false);
 
+    let default_data = {};
+    let hidden_node = { id: "hidden", color: "red", size: 25, x: -0.2, y: -0.2 };
+    default_data.nodes = [];
+    default_data.edges = [];
+    default_data.nodes.push(hidden_node);
+
+    const [data, setData] = useState({ ...default_data });
+
     const handleClose = () => {
         setShow(false);
         setWarning("");
     };
 
+    const handleStartState = (id) => {
+        let newState = { state: id };
+        setStartState({...newState});
+    }
+
+    const handleAcceptState = (id) => {
+        for (let node of nodes) {
+            if (typeof node[id] === "boolean" ) {
+                node[id] = !node[id];
+            } else {
+            }
+        }
+
+    }
+
+    const generateData = () => {
+
+
+
+        let tempData = { ...default_data };
+        let interNode, interEdge;
+        let x = 0, y = 1;
+        let edgeId = "e";
+        let count = 0;
+
+
+        // source id / name: [λ transition targets[], 0 transition target, 1 transition target],
+
+        for (const [src, transitionMap] of Object.entries(graph)) {
+            console.log(`${src}: ${transitionMap}`);
+            interNode = {}
+            interNode.id = src;
+            interNode.label = src;
+            if (src === startState.state) {
+                interNode.size = 25;
+                interNode.type = "diamond"
+                interNode.color = "#45adc1"
+            } else {
+                interNode.size = 20;
+                interNode.color = "black"
+            }
+            interNode.x = x;
+            interNode.y = y;
+            tempData.nodes.push(interNode);
+            x++;
+            y++;
+
+          }
+
+
+
+
+
+        // nodes.forEach((node) => {
+        //     interNode = {}
+        //     interNode.id = Object.keys(node).join("");
+        //     interNode.label = interNode.id;
+        //     if (node[interNode.id]) {
+        //         interNode.size = 25;
+        //         interNode.type = "diamond"
+        //         interNode.color = "#45adc1"
+        //     } else {
+        //         interNode.size = 20;
+        //         interNode.color = "black"
+        //     }
+        //     interNode.x = x;
+        //     interNode.y = y;
+        //     tempData.nodes.push(interNode);
+        //     x++;
+        //     y++;
+        // });
+        // edges.forEach((edge) => {
+        //     for (let src in edge) {
+        //         interEdge = {};
+        //         interEdge.id = edgeId + count;
+        //         interEdge.source = src;
+        //         interEdge.target = edge[src][0];
+        //         interEdge.label = edge[src][1];
+        //         interEdge.color = "grey";
+        //         tempData.edges.push(interEdge); 
+        //         if (src === startState) {
+        //             interEdge = {};
+        //             interEdge.id = "start";
+        //             interEdge.source = "hidden";
+        //             interEdge.target = src;
+        //             interEdge.color = "grey";
+        //             interEdge.type = "arrow"
+        //             tempData.edges.push(interEdge); 
+        //         }
+        //         count++;
+        //     }
+        // })
+
+
+
+
+        setData({ ...tempData })
+
+    }
+
+    const handleRemoveState = (id) => {
+        let rubbish = [];
+        let trash = [];
+        let newNodes = nodes.filter(node => node[id] === undefined);
+        setNodes([...newNodes]);
+
+        let newEdges = edges.filter(edge => edge[id] === undefined);
+        for (let edge of newEdges) {
+            // Only one key so it doesnt actually loop
+            for (let key in edge) {
+                if (edge[key][0] === id) {
+                    trash.push(edge)
+                }
+            }
+        }
+        newEdges.filter(edge => !trash.includes(edge));
+        setEdges([...newEdges]);
+
+        let newGraph = graph;
+        for (let entry of Object.entries(newGraph)) {
+            if (entry[0] === id) {
+                rubbish.push(entry)
+            } else {
+                for (let trans of entry[1]) {
+                    trans = trans.filter(n => n!==id )
+                }
+            }
+        }
+        setGraph({...newGraph})
+    }
+
     const sameArray = (a1, a2) => {
-        if (a1.length !== a2.length) {
+
+        if (a1 === undefined || !Array.isArray(a1) || !Array.isArray(a2) || a1.length !== a2.length) {
             return false
         } 
         for (let i = 0; i < a2.length; i++) {
@@ -49,7 +192,7 @@ function NFA() {
     }
 
     const sameObject = (o1, o2) => {
-        if (o1.size === o2.size) {
+        if (o1 !== undefined&& o2 !== undefined && o1.size === o2.size) {
             for (let key in o1) {
                 if (o1[key] !== o2[key]) {
                     return false;
@@ -67,13 +210,16 @@ function NFA() {
         for (const inside of list) {
             if (inside.size === object.size) {
                 for (let key in object) {
-                    if (Array.isArray(object[key]) && !sameArray(inside[key], object[key])){
+                    if (Array.isArray(object[key]) && sameArray(inside[key], object[key])){
                         broke = true;
                         break;
-                    } else if (typeof object[key] === "object" && !sameObject(object[key], inside[key])) {
+                    } else if (typeof object[key] === "object" && sameObject(object[key], inside[key])) {
                         broke = true;
                         break;
-                    } else if (object[key] !== inside[key]) {
+                    } else if (object[key] === inside[key]) {
+                        broke = true;
+                        break;
+                    } else if (typeof object[key] === "boolean" && typeof inside[key] === "boolean") {
                         broke = true;
                         break;
                     }
@@ -86,62 +232,75 @@ function NFA() {
         }
         return false;
     }
-    
     const handleShow = () => setShow(true);
+
+    const handleUpdateGraph = (n, e) => {
+        let tempGraph = {}
+        let temp;
+        let applicableEdges;
+        for (let node of n) {
+            // this does not loop. There is only one key
+            for (let name in node) {
+                temp = [[], [], []];
+                tempGraph[name] = temp;
+                applicableEdges = e.filter(edg => edg[name] !== undefined);
+                // eslint-disable-next-line no-loop-func
+                applicableEdges.forEach((applicableEdge) => {
+                    for (let src in applicableEdge) {
+                        // yikes that looks so ugly! might fix if i regain will to live
+                        temp[transitionIndex[applicableEdge[src][1]]].push(applicableEdge[src][0]);
+                    }
+                });
+                tempGraph[name] = temp;
+            }
+        }
+        setGraph({ ...tempGraph });
+        generateData();
+    }
     
     const handleAdd = () => {
-        let newNodes = nodes;
-        let newEdges = edges;
-        let newGraph = graph;
+        let newNodes = [...nodes];
+        let newEdges = [...edges];
         setSource(source.replace(/\s+/g, ''));
         setTransition(transition.replace(/\s+/g, ''));
         if (transition === "" || source === "" || target === "") {
             setWarning("Invalid entry try again");
             handleShow();
         } else {
-            let edge = { source: [target, transition] }
-            if (!objectInList(nodes, { source: false })) {
-                newNodes.push({ source: false });
-                newNodes.push({ target: false });
-                newEdges.push(edge);
-                let temp = [[], [], []];
-                temp[transitionIndex[transition]].push(target);
-                newGraph[source] = temp
-
-                setNodes(newNodes);
-                setEdges(newEdges);
-                setGraph(newGraph);
-
-                console.log("returned in no source")
-                console.log(graph);
-                return;
-            } else if (!nodes.includes(target)) {
-                newNodes.push({ target: false });
-                newEdges.push(edge);
-                setNodes(newNodes);
-                setEdges(newEdges);
-                
-            } else if (!objectInList(edges, edge)) {
-                newEdges.push(edge);
-                setEdges(newEdges);
+            let edge = {}
+            edge[source] = [target, transition];
+            let temp1 = {}
+            temp1[source] = false;
+            let temp2 = {}
+            temp2[target] = false;
+            if (startState.state === "") {
+                handleStartState(source);
             }
-            if (newGraph[source]) {
-                let addition = newGraph[source][transitionIndex[transition]];
-                if (!addition.includes(target)) {
-                    addition.push(target)
-                    newGraph[source][transitionIndex[transition]] = addition;
-                    setGraph(newGraph);
+            if (!objectInList(newNodes, temp1)) {
+                newNodes.push(temp1);
+                if (source !== target && !objectInList(nodes, temp2)) {
+                    newNodes.push(temp2);
                 }
-            } else {
-                let temp = [[], [], []];
-                temp[transitionIndex[transition]].push(target);
-                newGraph[source] = temp
-                setGraph(newGraph);
-
+                newEdges.push(edge);
+                setNodes([...newNodes]);
+                setEdges([...newEdges]);
+                handleUpdateGraph(newNodes, newEdges);
+                return;
+            } else if (!objectInList(newNodes, temp2)) {
+                newNodes.push(temp2);
+                newEdges.push(edge);
+                setNodes([...newNodes]);
+                setEdges([...newEdges]);
+                handleUpdateGraph(newNodes, newEdges);
+                return
+                
+            } else if (!objectInList(newEdges, edge)) {
+                newEdges.push(edge);
+                setEdges([...newEdges]);
+                handleUpdateGraph(newNodes, newEdges);
+                return;
             }
         }
-        console.log("returned in given source")
-        console.log(graph);
     }
 
     return (
@@ -157,7 +316,7 @@ function NFA() {
             justifyContent: "center",
         }}>
             <Row>
-            <Col xs={8}>
+            <Col xs={7}>
                 <Row>
                 <div style={{
                 outline: "3px dotted #1a7081",
@@ -204,12 +363,53 @@ function NFA() {
             </div>
                 </Row>
                 <Row>
-                <Graph />
+                            <Graph data={ data }/>
                 </Row>
             </Col>
             <Col>
                 <Row>
-                <Chart />
+                    <div style={{
+                        outline: "3px dotted #1a7081",
+                        width: "90%",
+                        margin: "50px",
+                        padding: "50px 50px 50px 50px",
+                    }}>
+                        <Table striped style={{
+                        }}>
+                            <thead>
+                                <tr>
+                                    <th>Source Node</th>
+                                    <th>λ</th>
+                                    <th>0</th>
+                                    <th>1</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    {Object.entries(graph).map((state) => (
+                                    <tr>
+                                        <td>{state[0]}</td>
+                                        <td>{state[1][0]?state[1][0].join(' ') : " "}</td>
+                                        <td>{state[1][1]?state[1][1].join(' '): " " }</td>
+                                        <td>{state[1][2]?state[1][2].join(' '): " " }</td>
+                                        <td>
+                                            <Button variant="info" id={`S${state[0]}`} onClick={() => handleStartState(state[0])}>
+                                                Start State
+                                            </Button>{' '}
+                                            <Button variant="info" id={`A${state[0]}`} onClick={() => handleAcceptState(state[0])}>
+                                                Accept State
+                                            </Button>{' '}
+                                            <Button variant="danger" id={`R${state[0]}`} onClick={() => handleRemoveState(state[0])}>
+                                                Remove State
+                                            </Button>{' '}
+                                        </td>
+                                    </tr>
+
+                                ))}
+                                
+                            </tbody>
+                        </Table>
+                    </div>
                 </Row>
             </Col>
             </Row>
