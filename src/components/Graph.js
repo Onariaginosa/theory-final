@@ -33,7 +33,7 @@ const Graph = (props) =>{
             [ ]
     };
     let take2 = { ...props.data };
-    // let myGraph = data;
+    // let myGraph = data
 
     console.log("Sent Data: ",props.data);
     console.log("Temp Data: ",temp)
@@ -47,7 +47,7 @@ const Graph = (props) =>{
             height: "600px",
             padding: "50px 50px 50px 50px",
         }}>
-            <Sigma renderer="canvas" graph={take2}
+            <Sigma renderer="canvas" graph={props.data}
                 style=
                 {{
                     margin: "0",

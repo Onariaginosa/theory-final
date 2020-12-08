@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Graph from "../Graph";
 import "../../App.css";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,6 +6,9 @@ import Table from 'react-bootstrap/Table';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+
+import { Sigma, EdgeShapes, NodeShapes} from 'react-sigma';
+import { DragNodes } from 'react-sigma';
 
 
 function NFA() {
@@ -33,6 +35,7 @@ function NFA() {
     const [target, setTarget] = useState("");
     const [warning, setWarning] = useState("");
     const [show, setShow] = useState(false);
+    const [acceptStates, setAcceptStates] = useState([]);
 
     let default_data = {};
     let hidden_node = { id: "hidden", color: "red", size: 25, x: -0.2, y: -0.2 };
@@ -40,7 +43,7 @@ function NFA() {
     default_data.edges = [];
     default_data.nodes.push(hidden_node);
 
-    const [data, setData] = useState({ ...default_data });
+    const [data, setData] = useState(default_data);
 
     const handleClose = () => {
         setShow(false);
@@ -53,33 +56,61 @@ function NFA() {
     }
 
     const handleAcceptState = (id) => {
+        let newAccepts = acceptStates;
+        let index = newAccepts.indexOf(id);
         for (let node of nodes) {
             if (typeof node[id] === "boolean" ) {
                 node[id] = !node[id];
-            } else {
+                if (index > -1) {
+                    newAccepts.splice(index, 1);
+                } else {
+                    newAccepts.push(id);
+                }
+                setAcceptStates([...newAccepts]);
+                break;
             }
         }
 
     }
 
-    const generateData = () => {
-
-
-
+    const handleGenerateData = () => {
         let tempData = { ...default_data };
         let interNode, interEdge;
+        // interNode = { id: "hidden", color: "red", size: 25};
         let x = 0, y = 1;
         let edgeId = "e";
         let count = 0;
 
-        // source id / name: [λ transition targets[], 0 transition target, 1 transition target],
+        // source id / name: [λ transition targets[], 0 transition target, 1 transition target],]]
 
-        for (const [src, transitionMap] of Object.entries(graph)) {
-            // console.log(`${src}: ${transitionMap}`);
+        console.log("g: ",graph)
+
+        // for (const [src, transitionMap] of Object.entries(graph)) {
+        //     console.log(`${src}: ${transitionMap}`);
+        //     console.log("we made it")
+        //     interNode = {}
+        //     interNode.id = src;
+        //     // interNode.label = src;
+        //     // if (src === startState.state) {
+        //     //     interNode.size = 25;
+        //     //     interNode.type = "diamond"
+        //     //     interNode.color = "#45adc1"
+        //     // } else {
+        //     //     interNode.size = 20;
+        //     //     interNode.color = "black"
+        //     // }
+        //     interNode.x = x;
+        //     interNode.y = y;
+        //     tempData.nodes.push(interNode);
+        //     x++;
+        //     y++;
+        //   }
+
+        nodes.forEach((node) => {
             interNode = {}
-            interNode.id = src;
-            interNode.label = src;
-            if (src === startState.state) {
+            interNode.id = Object.keys(node).join("");
+            interNode.label = interNode.id;
+            if (node[interNode.id]) {
                 interNode.size = 25;
                 interNode.type = "diamond"
                 interNode.color = "#45adc1"
@@ -92,51 +123,32 @@ function NFA() {
             tempData.nodes.push(interNode);
             x++;
             y++;
-          }
+        });
+        edges.forEach((edge) => {
+            for (let src in edge) {
+                interEdge = {};
+                interEdge.id = edgeId + count;
+                interEdge.source = src;
+                interEdge.target = edge[src][0];
+                interEdge.label = edge[src][1];
+                interEdge.color = "grey";
+                tempData.edges.push(interEdge); 
+                if (src === startState) {
+                    interEdge = {};
+                    interEdge.id = "start";
+                    interEdge.source = "hidden";
+                    interEdge.target = src;
+                    interEdge.color = "grey";
+                    interEdge.type = "arrow"
+                    tempData.edges.push(interEdge); 
+                }
+                count++;
+            }
+        })
 
 
-
-
-
-        // nodes.forEach((node) => {
-        //     interNode = {}
-        //     interNode.id = Object.keys(node).join("");
-        //     interNode.label = interNode.id;
-        //     if (node[interNode.id]) {
-        //         interNode.size = 25;
-        //         interNode.type = "diamond"
-        //         interNode.color = "#45adc1"
-        //     } else {
-        //         interNode.size = 20;
-        //         interNode.color = "black"
-        //     }
-        //     interNode.x = x;
-        //     interNode.y = y;
-        //     tempData.nodes.push(interNode);
-        //     x++;
-        //     y++;
-        // });
-        // edges.forEach((edge) => {
-        //     for (let src in edge) {
-        //         interEdge = {};
-        //         interEdge.id = edgeId + count;
-        //         interEdge.source = src;
-        //         interEdge.target = edge[src][0];
-        //         interEdge.label = edge[src][1];
-        //         interEdge.color = "grey";
-        //         tempData.edges.push(interEdge); 
-        //         if (src === startState) {
-        //             interEdge = {};
-        //             interEdge.id = "start";
-        //             interEdge.source = "hidden";
-        //             interEdge.target = src;
-        //             interEdge.color = "grey";
-        //             interEdge.type = "arrow"
-        //             tempData.edges.push(interEdge); 
-        //         }
-        //         count++;
-        //     }
-        // })
+        console.log(data)
+    
 
 
 
@@ -253,7 +265,6 @@ function NFA() {
             }
         }
         setGraph({ ...tempGraph });
-        generateData();
     }
     
     const handleAdd = () => {
@@ -364,19 +375,61 @@ function NFA() {
             </div>
                 </Row>
                 <Row>
-                            <Graph data={ data }/>
-                </Row>
-            </Col>
-            <Col>
-                <Row>
                     <div style={{
                         outline: "3px dotted #1a7081",
                         width: "90%",
                         margin: "50px",
+                        height: "600px",
                         padding: "50px 50px 50px 50px",
                     }}>
-                        <Table striped style={{
-                        }}>
+                        <Sigma renderer="canvas" graph={data}
+                            style=
+                            {{
+                                margin: "0",
+                                justifyContent: "center",
+                                display: "flex",
+                                position: "static",
+                                maxWidth: "inherit",
+                                height: "inherit",
+                            }}
+                            settings=
+                            {{
+                                fontStyle: "bold",
+                                scalingMode: "inside",
+                                drawEdges: true,
+                                drawEdgeLabels: true,
+                                clone: false,
+                                minArrowSize: 10,
+                                minNodeSize: 10,
+                                maxNodeSize: 40,
+                            }}
+                                    
+                        >
+                            <EdgeShapes default="curvedArrow"/>
+                            <NodeShapes default="circle" />
+                            <DragNodes />
+                        </Sigma>
+                    </div>
+                </Row>
+            </Col>
+            <Col>
+                <div style={{
+                    outline: "3px dotted #1a7081",
+                    width: "90%",
+                    margin: "50px",
+                    padding: "50px 50px 50px 50px",
+                    
+                    }}
+                >
+                    {/* <Row style ={{
+                        justifyContent: "center",
+                        display: "flex",
+                        margin: "0px 5px 15px 5px"
+                    }}>
+                        <Button variant="info" id="UpdateGraph" onClick={()=> handleGenerateData()}> Update Graph</Button>
+                    </Row>     */}
+                    <Row>    
+                        <Table striped>
                             <thead>
                                 <tr>
                                     <th>Source Node</th>
@@ -387,7 +440,7 @@ function NFA() {
                                 </tr>
                             </thead>
                             <tbody>
-                                    {Object.entries(graph).map((state) => (
+                                {Object.entries(graph).map((state) => (
                                     <tr>
                                         <td>{state[0]}</td>
                                         <td>{state[1][0]?state[1][0].join(' ') : " "}</td>
@@ -400,18 +453,24 @@ function NFA() {
                                             <Button variant="info" id={`A${state[0]}`} onClick={() => handleAcceptState(state[0])}>
                                                 Accept State
                                             </Button>{' '}
-                                            <Button variant="danger" id={`R${state[0]}`} onClick={() => handleRemoveState(state[0])}>
+                                            {/* <Button variant="danger" id={`R${state[0]}`} onClick={() => handleRemoveState(state[0])}>
                                                 Remove State
-                                            </Button>{' '}
+                                            </Button>{' '} */}
                                         </td>
                                     </tr>
-
                                 ))}
-                                
                             </tbody>
                         </Table>
-                    </div>
-                </Row>
+                    </Row>
+                    <Row>
+                        <h4>Start State: {startState.state}</h4>
+                        
+                    </Row> 
+                    <Row>
+                        <h4>Accept States: {acceptStates.join(", ")}</h4>
+                    </Row>        
+                </div>
+                
             </Col>
             </Row>
             </div>
