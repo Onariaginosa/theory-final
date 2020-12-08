@@ -305,8 +305,11 @@ function NFA() {
         <div>
         <div>
             <h1>
-                NFA Visualizer
+                    NFA Visualizer
             </h1>
+            <h2 style={{color:"red", fontWeight:"bold"}}>
+                *Under Construction!*
+            </h2>
         </div>
         <div style={{
             margin: "25px",

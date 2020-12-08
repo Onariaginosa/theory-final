@@ -305,8 +305,11 @@ function DFA() {
       <div>
       <div>
           <h1>
-              DFA Visualizer
+            DFA Visualizer
           </h1>
+          <h2 style={{color:"red", fontWeight:"bold"}}>
+              *Under Construction!*
+          </h2>
       </div>
       <div style={{
           margin: "25px",
