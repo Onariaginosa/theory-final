@@ -7,8 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-import { Sigma, EdgeShapes, NodeShapes} from 'react-sigma';
-import { DragNodes } from 'react-sigma';
+import Graph from "../Graph";
 
 
 function NFA() {
@@ -157,36 +156,36 @@ function NFA() {
 
     }
 
-    const handleRemoveState = (id) => {
-        let rubbish = [];
-        let trash = [];
-        let newNodes = nodes.filter(node => node[id] === undefined);
-        setNodes([...newNodes]);
+    // const handleRemoveState = (id) => {
+    //     let rubbish = [];
+    //     let trash = [];
+    //     let newNodes = nodes.filter(node => node[id] === undefined);
+    //     setNodes([...newNodes]);
 
-        let newEdges = edges.filter(edge => edge[id] === undefined);
-        for (let edge of newEdges) {
-            // Only one key so it doesnt actually loop
-            for (let key in edge) {
-                if (edge[key][0] === id) {
-                    trash.push(edge)
-                }
-            }
-        }
-        newEdges.filter(edge => !trash.includes(edge));
-        setEdges([...newEdges]);
+    //     let newEdges = edges.filter(edge => edge[id] === undefined);
+    //     for (let edge of newEdges) {
+    //         // Only one key so it doesnt actually loop
+    //         for (let key in edge) {
+    //             if (edge[key][0] === id) {
+    //                 trash.push(edge)
+    //             }
+    //         }
+    //     }
+    //     newEdges.filter(edge => !trash.includes(edge));
+    //     setEdges([...newEdges]);
 
-        let newGraph = graph;
-        for (let entry of Object.entries(newGraph)) {
-            if (entry[0] === id) {
-                rubbish.push(entry)
-            } else {
-                for (let trans of entry[1]) {
-                    trans = trans.filter(n => n!==id )
-                }
-            }
-        }
-        setGraph({...newGraph})
-    }
+    //     let newGraph = graph;
+    //     for (let entry of Object.entries(newGraph)) {
+    //         if (entry[0] === id) {
+    //             rubbish.push(entry)
+    //         } else {
+    //             for (let trans of entry[1]) {
+    //                 trans = trans.filter(n => n!==id )
+    //             }
+    //         }
+    //     }
+    //     setGraph({...newGraph})
+    // }
 
     const sameArray = (a1, a2) => {
 
@@ -375,41 +374,7 @@ function NFA() {
             </div>
                 </Row>
                 <Row>
-                    <div style={{
-                        outline: "3px dotted #1a7081",
-                        width: "90%",
-                        margin: "50px",
-                        height: "600px",
-                        padding: "50px 50px 50px 50px",
-                    }}>
-                        <Sigma renderer="canvas" graph={data}
-                            style=
-                            {{
-                                margin: "0",
-                                justifyContent: "center",
-                                display: "flex",
-                                position: "static",
-                                maxWidth: "inherit",
-                                height: "inherit",
-                            }}
-                            settings=
-                            {{
-                                fontStyle: "bold",
-                                scalingMode: "inside",
-                                drawEdges: true,
-                                drawEdgeLabels: true,
-                                clone: false,
-                                minArrowSize: 10,
-                                minNodeSize: 10,
-                                maxNodeSize: 40,
-                            }}
-                                    
-                        >
-                            <EdgeShapes default="curvedArrow"/>
-                            <NodeShapes default="circle" />
-                            <DragNodes />
-                        </Sigma>
-                    </div>
+                    <Graph />
                 </Row>
             </Col>
             <Col>

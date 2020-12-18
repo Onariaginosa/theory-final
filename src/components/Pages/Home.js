@@ -16,7 +16,7 @@ function Home() {
               Hello! Hello! This is Ona's Theory Final Project
         </h1>
         <h2> What I chose to do</h2>
-        <p> I decided to create a DFA minimizer, and a NFA minimizer</p>
+        <p> I decided to create a NFA simulator, and a DFA minimizer</p>
         <p> Grade easily please! 😊</p>
       </div>
       {/* <div style={{

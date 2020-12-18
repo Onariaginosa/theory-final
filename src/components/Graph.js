@@ -2,7 +2,8 @@ import React from "react";
 import { Sigma, EdgeShapes, NodeShapes} from 'react-sigma';
 import { DragNodes } from 'react-sigma';
 
-const Graph = (props) =>{
+
+const Graph = React.memo(function Graph(props) {
     let temp = {
         nodes: [
             {
@@ -27,16 +28,17 @@ const Graph = (props) =>{
                 label: "m",
                 size: 20,
                 x: 1,
-                y: 2}
+                y: 2
+            }
         ],
         edges:
-            [ ]
+            []
     };
     let take2 = { ...props.data };
     // let myGraph = data
 
-    console.log("Sent Data: ",props.data);
-    console.log("Temp Data: ",temp)
+    console.log("Sent Data: ", props.data);
+    console.log("Temp Data: ", temp)
 
     return (
       
@@ -70,7 +72,7 @@ const Graph = (props) =>{
                 }}
                         
             >
-                <EdgeShapes default="curvedArrow"/>
+                <EdgeShapes default="curvedArrow" />
                 <NodeShapes default="circle" />
                 <DragNodes />
                 {/* <ForceLink background strongGravityMode={false} alignNodeSiblings={true} outboundAttractionDistribution={true}/> */}
@@ -78,6 +80,6 @@ const Graph = (props) =>{
             </Sigma>
         </div>
     )
-}
+});
   
 export default Graph;

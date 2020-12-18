@@ -20,6 +20,11 @@ function App() {
           </Route>
           <Route exact path="/dfa-mini">
             <DFAmin />
+            {/* <div>
+            <h1>
+              Under Construction!
+            </h1>
+            </div> */}
           </Route>
           <Route exact path="/nfa-mini">
             <NFAmin />
