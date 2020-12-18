@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-// import Graph from "../Graph";
 
 
 function DFAmin() {
@@ -13,7 +12,7 @@ function DFAmin() {
   const [warning, setWarning] = useState("");
   const [show, setShow] = useState(false);
 
-  // Input Box Variables
+  // State Input Box Variables
   const [transition, setTransition] = useState("0");
   const [source, setSource] = useState("");
   const [target, setTarget] = useState("");
@@ -445,9 +444,6 @@ function DFAmin() {
                 </Row>        
               </div>
             </Row>
-            <Row>
-              {/* <Graph /> */}
-            </Row>  
           </Col>
         </Row>
       </div>

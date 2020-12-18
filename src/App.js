@@ -4,10 +4,8 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./components/Pages/Home.js";
-import NFAmin from "./components/Pages/NFAmin.js";
 import DFAmin from "./components/Pages/DFAmin.js";
 import NFA from "./components/Pages/NFA.js";
-import DFA from "./components/Pages/DFA.js";
 
 function App() {
   return (
@@ -26,14 +24,9 @@ function App() {
             </h1>
             </div> */}
           </Route>
-          <Route exact path="/nfa-mini">
-            <NFAmin />
-          </Route>
+         =
           <Route exact path="/nfa">
             <NFA />
-          </Route>
-          <Route exact path="/dfa">
-            <DFA />
           </Route>
         </Switch>
       </Router>
