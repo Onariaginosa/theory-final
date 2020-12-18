@@ -23,7 +23,7 @@ function NFA() {
 
   // Graph Variables
   const [startState, setStartState] = useState({ state: "" });
-  const [nodes, setNodes] = useState({});
+  const [nodes, setNodes] = useState({});// {node: {0: [], 1: [], 'λ': [] }, node2: ...}
   const [acceptStates, setAcceptStates] = useState([]);
 
   const handleClose = () => {
@@ -82,12 +82,53 @@ function NFA() {
     }
   }
 
+  const partialAccept = (str, current, lambdaLoops) => {
+    if (str === "") {
+      return acceptStates.includes(current);
+    } else {
+      let node = nodes[current];
+      for (let transition in node) {
+        if (transition === str.substring(0, 1)) {
+          for (let state of nodes[current][transition]) {
+            if (partialAccept(str.substring(1), state, [])) {
+              return true;
+            }
+          }
+        }
+        if (transition === "λ" && !lambdaLoops.includes(current) && nodes[current][transition].length > 0) {
+          lambdaLoops.push(current);
+          for (let state of nodes[current][transition]) { 
+            if (partialAccept(str.substring(1), state, lambdaLoops)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  const isStringAccepted = () => {
+    let str = testerString.replace(/\s+/g, '')
+    str = str.replace(/λ/g, "");
+    console.log(str);
+    setAcceptedString(partialAccept(str, startState.state), []);
+  }
+
   const handleValidate = () => {
     if (Object.keys(nodes).length === 0) {
+      setAcceptedString(null);
       setWarning("Please enter a NFA")
       setShow(true)
+    } else if (startState.state === "") {
+      setAcceptedString(null);
+      setWarning("Please select a start state.")
+      setShow(true)
+    }else if (/^([01λ\s]*)$/.test(testerString)) {
+      isStringAccepted();
     } else {
-      setWarning("Cannot minimize a DFA if there are states with empty transitions")
+      setAcceptedString(null);
+      setWarning("Σ = { '0', '1', 'λ' }. Please only use characters in the given alphabet. String: "+testerString)
       setShow(true)
     }
   }
@@ -142,10 +183,10 @@ function NFA() {
       <div>
         <h1 style={{
           margin: "50px",
-          // justifyContent: "center",
+          justifyContent: "center",
           }}
         >
-          NFA Visualizer
+          NFA Simulator
         </h1>
         <Row style={{
         margin: "5px",
@@ -163,7 +204,11 @@ function NFA() {
             // display: "flex",
             justifyContent: "center",
       }}>
-        <Row>
+        <Row style={{
+        justifyContent: "center",
+        }}
+        >
+          
         <div style={{
                 outline: "3px dotted #1a7081",
                 width: "90%",
@@ -209,10 +254,14 @@ function NFA() {
             </div>
         </Row>
         <Row style={{
-                    margin: " auto auto auto auto",
-                }}>
+          justifyContent: "center",
+          }}
+        >
           <Col xs={8}>
-            <Row>
+            <Row style={{
+              justifyContent: "center",
+              }}
+            >
               <h2> Graph</h2>
             </Row>
             <Row>
@@ -271,7 +320,10 @@ function NFA() {
             </Row>
           </Col>
           <Col xs={3}>
-            <Row>
+            <Row style={{
+              justifyContent: "center",
+              }}
+            >
               <h2> String Validation</h2>
             </Row>
             <Row>

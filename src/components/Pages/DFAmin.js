@@ -275,7 +275,7 @@ function DFAmin() {
       <div>
         <h1 style={{
           margin: "50px",
-          // justifyContent: "center",
+          justifyContent: "center",
           }}
         >
           DFA Minimizer
@@ -288,7 +288,6 @@ function DFAmin() {
           <h3> Graph {complete ? "is" : "is not"} currently minimized </h3>
         </Row>
         <Row style={{
-          // margin: "50px",
           justifyContent: "center",
           }}
         >
@@ -300,7 +299,10 @@ function DFAmin() {
             // display: "flex",
             justifyContent: "center",
       }}>
-        <Row>
+        <Row style={{
+          justifyContent: "center",
+          }}
+        >
         <div style={{
                 outline: "3px dotted #1a7081",
                 width: "90%",
@@ -344,9 +346,15 @@ function DFAmin() {
               </Form>
             </div>
         </Row>
-        <Row>
+        <Row style={{
+          justifyContent: "center",
+          }}
+        >
           <Col xs={5}>
-            <Row>
+            <Row style={{
+              justifyContent: "center",
+              }}
+            >
               <h2>Original Graph</h2>
             </Row>
             <Row>
@@ -403,7 +411,10 @@ function DFAmin() {
             </Row>
           </Col>
           <Col xs={5}>
-            <Row>
+            <Row style={{
+              justifyContent: "center",
+              }}
+            >
               <h2>Minimized Graph</h2>
             </Row>
             <Row>

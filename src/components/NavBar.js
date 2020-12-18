@@ -22,7 +22,7 @@ function NavBar() {
 
           <Nav className="mr-auto">
             {/* <Nav.Link href="#dfa">DFA Visualizer</Nav.Link> */}
-            <Nav.Link href="#nfa">NFA Visualizer/Simulator</Nav.Link>
+            <Nav.Link href="#nfa">NFA Simulator</Nav.Link>
             <Nav.Link href="#dfa-mini">DFA minimizer</Nav.Link>
             {/* <Nav.Link href="#nfa-mini">NFA minimizer</Nav.Link> */}
             </Nav>
