@@ -122,6 +122,15 @@ function DFAmin() {
     return true;;
   }
 
+  const sameBehavior = (x, y) => {
+    for (let key in x) {
+      if (y[key] !== x[key]) {
+        return false;
+      } 
+    }
+    return true;
+  }
+
   const getCurrentBehavior = (node, groups) => {
     let transitions = [];
     let behavior = {}
@@ -143,14 +152,13 @@ function DFAmin() {
     return behavior;
   }
 
-  const matchBehaviors = (currentBehavior, groupBehaviors, currentAccept) => {
-    let behaviorA;
+  const matchBehaviors = (currentBehavior, groupBehaviors, currentAccept, acceptList) => {
     for (let behavior in groupBehaviors) {
-      behaviorA = "A" + behavior
-      if (groupBehaviors[behavior]["0"] === currentBehavior["0"] &&
-        groupBehaviors[behavior]["1"] === currentBehavior["1"] &&
-        groupBehaviors[behaviorA] === currentAccept) {
-        return behavior;
+      if (groupBehaviors[behavior]["0"] === currentBehavior["0"] && groupBehaviors[behavior]["1"] === currentBehavior["1"]) {
+        if (acceptList.includes(behavior) === currentAccept) {
+          return behavior;
+          
+        }
       }
     }
     return -1;
@@ -160,10 +168,12 @@ function DFAmin() {
     let oldgroups = {};
     let newgroups = {};
     let groupBehaviors = {};
-    let currentBehavior = {};
+    let generalBehaviors = {}
     let temp;
     let groupCount = 2;
-    let accept
+    let name
+    let currentAccepts = ["0",];
+    let lett;
 
     // split between accept states and non accept states
     newgroups[0] = [...acceptStates];
@@ -178,28 +188,37 @@ function DFAmin() {
       oldgroups = { ...newgroups };
       newgroups = {};
       groupBehaviors = {}
+      generalBehaviors = {}
       // set group Behaviors
       for (let group in oldgroups) {
         for (let node of oldgroups[group]) {
-          accept = "A" + group;
-          groupBehaviors[group] = getCurrentBehavior(node, oldgroups);
-          groupBehaviors[accept] = acceptStates.includes(node);
-          break;
+          name = group + node;
+          groupBehaviors[name] = getCurrentBehavior(node, oldgroups);
         }
       }
-      // loop to see if current behavior matches group behavior
+      // split groups by behavior
       for (let group in oldgroups) {
         for (let node of oldgroups[group]) {
-          currentBehavior = getCurrentBehavior(node, oldgroups);
-          temp = matchBehaviors(currentBehavior, groupBehaviors, acceptStates.includes(node));
-          if (temp === -1) {
-            newgroups[groupCount] = [node];
-            groupBehaviors[groupCount] = currentBehavior;
-            groupCount++;
-          } else if (newgroups[temp] !== undefined) {
-            newgroups[temp].push(node);
+          name = group + node;
+          if (newgroups[group] === undefined) {
+            newgroups[group] = [node]
+            generalBehaviors[group] = groupBehaviors[name]
+          } else if (sameBehavior(groupBehaviors[name], generalBehaviors[group])) {
+            newgroups[group].push(node);
           } else {
-            newgroups[temp] = [node]
+            lett = group + "";
+            temp = matchBehaviors(groupBehaviors[name], generalBehaviors, currentAccepts.includes(lett), currentAccepts);
+            if (temp === -1) {
+              if (currentAccepts.includes(lett)) {
+                lett = groupCount + "";
+                currentAccepts.push(lett);
+              }
+              newgroups[groupCount] = [node];
+              generalBehaviors[groupCount] = groupBehaviors[name]
+              groupCount++;
+            } else {
+              newgroups[temp].push(node);
+            }
           }
         }
       }
@@ -208,25 +227,31 @@ function DFAmin() {
     let newNodes = {}
     let newName, newTarget, trans;
     let minAccepts = []
-    for (let behavior in groupBehaviors) {
-      if (behavior.charAt(0) !== "A") {
+    let minStart
+    for (let behavior in generalBehaviors) {
         newName = newgroups[behavior].join("");
         newNodes[newName] = {}
         if (newgroups[behavior].includes(startState.state)) {
           setMinStartState({ state: newName })
+          minStart = { state: newName };
         }
         if (acceptStates.includes(newgroups[behavior][0])) {
           minAccepts.push(newName);
         }
         for (let i = 0; i <= 1; i++) {
           trans = "" + i;
-          newTarget = newgroups[groupBehaviors[behavior][trans]];
-          newNodes[newName][trans] = newTarget.join("");
+          newTarget = newgroups[generalBehaviors[behavior][trans]];
+          newNodes[newName][trans] = newTarget ? newTarget.join(""): "";
         }
-      }
     }
     setMinNodes({ ...newNodes })
     setMinAcceptStates([...minAccepts])
+    console.log("Old nodes: ", nodes);
+    console.log("Min nodes: ", newNodes);
+    console.log("Old accepts: ", acceptStates);
+    console.log("Min accepts: ", minAccepts);
+    console.log("Old start: ", startState);
+    console.log("Min start: ", minStart);
   }
 
   const handleAdd = () => {
@@ -285,7 +310,7 @@ function DFAmin() {
         justifyContent: "center",
         }}
         >
-          <h3> Graph {complete ? "is" : "is not"} currently minimized </h3>
+          <h3> Graph {complete ? "can" : "can't"} be minimized </h3>
         </Row>
         <Row style={{
           justifyContent: "center",
