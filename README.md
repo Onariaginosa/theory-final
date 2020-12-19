@@ -3,7 +3,14 @@
 ## To run tests enter the following commands in the terminal
 `cd src/test`
 
+### DFA Minimizer Tests
+
 `node TestDFAmin.js`
+
+### NFA Simulator Tests
+
+`node TestNFA.js`
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
