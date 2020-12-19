@@ -2,6 +2,7 @@
 
 ## To run tests enter the following commands in the terminal
 `cd src/test`
+
 `node TestDFAmin.js`
 ## Getting Started with Create React App
 
