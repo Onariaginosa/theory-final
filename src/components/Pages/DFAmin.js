@@ -224,34 +224,26 @@ function DFAmin() {
       }
     }
     // we have our groups now we make the minimized nodes and transitions
-    let newNodes = {}
+    let newNodes = {};
     let newName, newTarget, trans;
-    let minAccepts = []
-    let minStart
+    let minAccepts = [];
     for (let behavior in generalBehaviors) {
-        newName = newgroups[behavior].join("");
-        newNodes[newName] = {}
-        if (newgroups[behavior].includes(startState.state)) {
-          setMinStartState({ state: newName })
-          minStart = { state: newName };
-        }
-        if (acceptStates.includes(newgroups[behavior][0])) {
-          minAccepts.push(newName);
-        }
-        for (let i = 0; i <= 1; i++) {
-          trans = "" + i;
-          newTarget = newgroups[generalBehaviors[behavior][trans]];
-          newNodes[newName][trans] = newTarget ? newTarget.join(""): "";
-        }
+      newName = newgroups[behavior].join("");
+      newNodes[newName] = {};
+      if (newgroups[behavior].includes(startState.state)) {
+        setMinStartState({ state: newName })
+      }
+      if (acceptStates.includes(newgroups[behavior][0])) {
+        minAccepts.push(newName);
+      }
+      for (let i = 0; i <= 1; i++) {
+        trans = "" + i;
+        newTarget = newgroups[generalBehaviors[behavior][trans]];
+        newNodes[newName][trans] = newTarget ? newTarget.join(""): "";
+      }
     }
     setMinNodes({ ...newNodes })
     setMinAcceptStates([...minAccepts])
-    console.log("Old nodes: ", nodes);
-    console.log("Min nodes: ", newNodes);
-    console.log("Old accepts: ", acceptStates);
-    console.log("Min accepts: ", minAccepts);
-    console.log("Old start: ", startState);
-    console.log("Min start: ", minStart);
   }
 
   const handleAdd = () => {
@@ -321,7 +313,6 @@ function DFAmin() {
       </div>
       <div style={{
             margin: "25px",
-            // display: "flex",
             justifyContent: "center",
       }}>
         <Row style={{

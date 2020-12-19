@@ -11,6 +11,7 @@ function Home() {
         </h1>
         <h2> What I chose to do</h2>
         <p> I decided to create a NFA simulator, and a DFA minimizer</p>
+        <p> Check Github for test running instructions!</p>
         <p> Grade easily please! 😊</p>
       </div>
     </div>

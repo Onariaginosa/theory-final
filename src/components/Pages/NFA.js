@@ -114,7 +114,7 @@ function NFA() {
   const isStringAccepted = () => {
     let str = testerString.replace(/\s+/g, '')
     str = str.replace(/λ/g, "");
-    console.log(str);
+    setAcceptedString(partialAccept(partialAccept(str, startState.state)));
     setAcceptedString(partialAccept(str, startState.state));
   }
 
@@ -204,7 +204,6 @@ function NFA() {
       </div>
       <div style={{
             margin: "25px",
-            // display: "flex",
             justifyContent: "center",
       }}>
         <Row style={{

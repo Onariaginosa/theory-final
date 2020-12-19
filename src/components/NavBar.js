@@ -24,10 +24,6 @@ function NavBar() {
           <Nav className="mr-auto">
             <Nav.Link href="#nfa">NFA Simulator</Nav.Link>
             <Nav.Link href="#dfa-mini">DFA minimizer</Nav.Link>
-            {/* <NavDropdown title="Tests" id="tests">
-              <NavDropdown.Item href="#nfa-tests">NFA SimulatorTests</NavDropdown.Item>
-              <NavDropdown.Item href="#dfa-mini-tests">DFA Minimizer Tests</NavDropdown.Item>
-            </NavDropdown> */}
             </Nav>
         </Navbar>
 

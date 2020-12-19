@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./components/Pages/Home.js";
 import DFAmin from "./components/Pages/DFAmin.js";
 import NFA from "./components/Pages/NFA.js";
-import TestNFA from "./test/TestNFA.js";
-import TestDFAmin from "./test/TestDFAmin.js";
 
 function App() {
   return (
@@ -23,12 +21,6 @@ function App() {
           </Route>
           <Route exact path="/nfa">
             <NFA />
-          </Route>
-          <Route exact path="/nfa-tests">
-            <TestNFA />
-          </Route>
-          <Route exact path="/dfa-mini-tests">
-            <TestDFAmin />
           </Route>
         </Switch>
       </Router>
