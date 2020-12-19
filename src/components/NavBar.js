@@ -19,8 +19,6 @@ function NavBar() {
                 alt="Ona"
             />
               </Navbar.Brand>
-              
-
           <Nav className="mr-auto">
             <Nav.Link href="#nfa">NFA Simulator</Nav.Link>
             <Nav.Link href="#dfa-mini">DFA minimizer</Nav.Link>
